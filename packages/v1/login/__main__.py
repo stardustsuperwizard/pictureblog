@@ -35,7 +35,7 @@ def html_reponse(event):
         }    
     elif method.lower() == 'get':
         if event.get('http', {}).get('headers', {}).get('cookie'):
-            cookie = dict(key_val_pair.split('=') for key_val_pair in event['cookie'])
+            cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
             user_dict = validate_jwt(cookie)
             template = ENVIRONMENT.get_template("authenticated.html")
             return {
