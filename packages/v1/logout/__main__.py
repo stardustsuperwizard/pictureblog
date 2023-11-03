@@ -1,21 +1,26 @@
+import datetime
 import json
 import logging
 
 import jinja2
 
 
+ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
+
+
 def html_reponse(event):
     method = event.get('http', {}).get('headers', {}).get("method", "")
-    if method.lower() == 'post':
-        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-        template = environment.get_template("base.html")
+    if event.get('cookie', ""):
+        cookie = dict(key_val_pair.split('=') for key_val_pair in event['cookie'])
+        template = ENVIRONMENT.get_template("base.html")
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event))
-        }    
+                "Set-Cookie": f"Token={cookie['Token']}; Max-Age=0",
+
+        }
     else:
-        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-        template = environment.get_template("base.html")
+        template = ENVIRONMENT.get_template("base.html")
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event))
