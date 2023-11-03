@@ -1,7 +1,7 @@
 packages:
   - name: pictureblog
-    functions:
+    actions:
       - name: gateway
-        main: gateway.py
+        runtime: 'python:3.11'
         limits:
           timeout: 30000
