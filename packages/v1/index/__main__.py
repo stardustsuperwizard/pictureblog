@@ -6,7 +6,7 @@ import jwt
 
 
 ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-SECRET = os.environ['JWTKey']
+SECRET = os.environ['LANG']
 
 
 def validate_jwt(encoded_jwt: str):
@@ -20,7 +20,7 @@ def validate_jwt(encoded_jwt: str):
 def html_reponse(event):
     method = event.get('http', {}).get("method", "")
     
-    user = None
+    user = False
     template = ENVIRONMENT.get_template("base.html")
     
     if event.get('http', {}).get('headers', {}).get('cookie'):
