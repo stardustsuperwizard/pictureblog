@@ -70,6 +70,7 @@ def html_reponse(event):
 
 
 def json_response(event):
+    method = event.get('http', {}).get("method", "")
     if method.lower() == 'post':
         username = event.get('username')
         password = event.get('password')
@@ -117,6 +118,6 @@ def main(event, context):
 #
 if __name__ == '__main__':
     # response = main({'http':{'method':'GET', 'headers':{'cookie':'Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ.6O7zatr8KRQaz91wY--6IhVTc3MqGl0fDToaMihUahA', 'accept':'text/html'}}}, "")
-    response = main({'http':{'method':'GET', 'headers':{'accept':'text/html'}}}, "")
-    # response = main({}, "")
+    # response = main({'http':{'method':'GET', 'headers':{'accept':'text/html'}}}, "")
+    response = main({}, "")
     print(response)
