@@ -5,12 +5,21 @@ import jinja2
 
 
 def html_reponse(event):
-    environment = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-    template = environment.get_template("template.html")
-    return {
-        "statusCode": 200,
-        "body": template.render()
-    }
+    method = event.get('http', {}).get('headers', {}).get("method", "")
+    if method.lower() == 'post':
+        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
+        template = environment.get_template("base.html")
+        return {
+            "statusCode": 200,
+            "body": template.render(event = event)
+        }    
+    else:
+        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
+        template = environment.get_template("base.html")
+        return {
+            "statusCode": 200,
+            "body": template.render(event = event)
+        }
 
 
 def main(event, context):

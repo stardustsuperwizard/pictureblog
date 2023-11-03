@@ -1,3 +1,4 @@
+{# templates/message.txt #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +9,12 @@
 <body>
     <h1>Login</h1>
     <div>
-        <form action="api/v1/login" method="POST" class="login">
+        <form method="POST" class="login">
             <input type="text" name="username" id="" placeholder="username">
             <input type="password" name="password" id="" placeholder="password">
             <input type="submit" value="Login">
         </form>
     </div>
+    <p>{{event}}</p>
 </body>
 </html>
