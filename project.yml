@@ -1,7 +1,10 @@
 packages:
-  - name: pictureblog
+  - name: api
     actions:
-      - name: gateway
+      - name: v1
         runtime: 'python:3.11'
         limits:
           timeout: 30000
+        functions:
+          - name: index
+          - name: hello
