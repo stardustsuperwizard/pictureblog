@@ -69,15 +69,46 @@ def html_reponse(event):
     }    
 
 
+def json_response(event):
+    if method.lower() == 'post':
+        username = event.get('username')
+        password = event.get('password')
+
+        if not username or not password:
+            return {
+                "statusCode": 401,
+                "body": {'message': 'user/name password incorrect.'},
+                "headers":{
+                    "Content-Type": "application/json",
+                }
+            }            
+
+        valid_token = create_jwt(username, password)
+        if valid_token:
+            return {
+                "statusCode": 200,
+                "body": {'token': valid_token, 'event': event},
+                "headers": {
+                    "Content-Type": "application/json",
+                }
+            }  
+
+    else:
+        return {
+            "statusCode": 401,
+            "body": {'message': 'Log in.', 'event': event},
+            "headers":{
+                "Content-Type": "application/json",
+            }
+        }
+
+
 def main(event, context):
     response = {}
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
         response = html_reponse(event)
     else:
-        response = {
-        "statusCode": 200,
-        "body": response
-    }
+        response = json_response(event)
     return response
 
 

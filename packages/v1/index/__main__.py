@@ -42,13 +42,27 @@ def html_reponse(event):
     }
 
 
+def json_response(event):
+
+    user = 'stranger'
+    if event.get('token'):
+        valid_token = validate_jwt(event['token'])
+        if valid_token:
+            user = valid_token['user']
+
+    return {
+        "statusCode": 200,
+        "body": {'message': f'Hello, {user}!', 'event': event},
+        "headers": {
+            "Content-Type": "application/json",
+        }
+    } 
+
+
 def main(event, context):
     response = event
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
         response = html_reponse(event)
     else:
-        response = {
-        "statusCode": 200,
-        "body": response
-    }
+        response = json_response(event)
     return response

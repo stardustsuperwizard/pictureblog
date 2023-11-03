@@ -12,14 +12,14 @@ def html_reponse(event):
     method = event.get('http', {}).get("method", "")
     if event.get('http', {}).get('headers', {}).get('cookie'):
         cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
-        jwt = cookie['Token']
+        token = cookie['Token']
         template = ENVIRONMENT.get_template("base.html")
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event)),
             "headers":{
                 "Content-Type": "text/html",
-                "Set-Cookie": f"Token={jwt}; Max-Age=0; Secure; HttpOnly",
+                "Set-Cookie": f"Token={token}; Max-Age=0; Secure; HttpOnly",
             }
         }
     else:
@@ -29,6 +29,27 @@ def html_reponse(event):
             "body": template.render(event = json.dumps(event)),
             "headers":{
                 "Content-Type": "text/html",
+            }
+        }
+
+
+def json_response(event):
+    if event.get('http', {}).get('headers', {}).get('cookie'):
+        cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
+        token = cookie['Token']
+        return {
+            "statusCode": 200,
+            "body": {'message': 'Logged out.'},
+            "headers":{
+                "Content-Type": "application/json",
+            }
+        }
+    else:
+        return {
+            "statusCode": 200,
+            "body": {'message': 'Logged out.'},
+            "headers":{
+                "Content-Type": "application/json",
             }
         }
 
@@ -38,10 +59,7 @@ def main(event, context):
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
         response = html_reponse(event)
     else:
-        response = {
-        "statusCode": 200,
-        "body": response
-    }
+        response = json_response(event)
     return response
 
 
