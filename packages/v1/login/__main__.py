@@ -19,7 +19,7 @@ def validate_jwt(jwt: str):
 
 
 def html_reponse(event):
-    method = event.get('http', {}).get('headers', {}).get("method", "")
+    method = event.get('http', {}).get("method", "")
     if method.lower() == 'post':
         jwt = create_jwt(event['username'], event['password'])
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
