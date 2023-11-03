@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 
@@ -10,12 +11,15 @@ SECRET = 'mysecret'
 
 
 def create_jwt(user: str, password: str):
-    encoded_jwt = jwt.encode({'user': user}, SECRET, algorithm='HS256')
+    encoded_jwt = jwt.encode({'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=30), 'user': user}, SECRET, algorithm='HS256')
     return encoded_jwt
 
 
 def validate_jwt(encoded_jwt: str):
-    data = jwt.decode(encoded_jwt.strip(), SECRET, algorithms=['HS256'])
+    try:
+        data = jwt.decode(encoded_jwt.strip(), SECRET, algorithms=['HS256'])
+    except jwt.ExpiredSignatureError:
+        data = False
     return data
 
 
@@ -23,37 +27,38 @@ def html_reponse(event):
 
     method = event.get('http', {}).get("method", "")
     if method.lower() == 'post':
-        jwt = create_jwt(event['username'], event['password'])
+        valid_token = create_jwt(event['username'], event['password'])
         template = ENVIRONMENT.get_template("authenticated.html")
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event), user = event['username']),
             "headers": {
-                "Set-Cookie": f"Token={jwt}; Max-Age=60; Secure; HttpOnly",
+                "Set-Cookie": f"Token={valid_token}; Max-Age=300; Secure; HttpOnly",
                 "Content-Type": "text/html",
             }
         }    
     elif method.lower() == 'get':
         if event.get('http', {}).get('headers', {}).get('cookie'):
             cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
-            user_dict = validate_jwt(cookie['Token'])
-            template = ENVIRONMENT.get_template("authenticated.html")
-            return {
-                "statusCode": 200,
-                "body": template.render(event = json.dumps(event), user = user_dict['user']),
-                "headers": {
-                    "Content-Type": "text/html",
+            valid_token = validate_jwt(cookie['Token'])
+            if valid_token:
+                template = ENVIRONMENT.get_template("authenticated.html")
+                return {
+                    "statusCode": 200,
+                    "body": template.render(event = json.dumps(event), user = user_dict['user']),
+                    "headers": {
+                        "Content-Type": "text/html",
+                    }
                 }
-            }         
 
-        template = ENVIRONMENT.get_template("unauthenticated.html")
-        return {
-            "statusCode": 200,
-            "body": template.render(event = json.dumps(event)),
-            "headers": {
-                "Content-Type": "text/html",
-            }
-        }    
+    template = ENVIRONMENT.get_template("unauthenticated.html")
+    return {
+        "statusCode": 200,
+        "body": template.render(event = json.dumps(event)),
+        "headers": {
+            "Content-Type": "text/html",
+        }
+    }    
 
 
 def main(event, context):
