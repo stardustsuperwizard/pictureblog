@@ -1,5 +1,5 @@
 packages:
-  - name: api
+  - name: v1
     functions:
       - name: index
         runtime: 'python:3.11'
