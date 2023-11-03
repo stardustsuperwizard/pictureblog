@@ -30,6 +30,7 @@ def html_reponse(event):
             "headers": {
                 "Set-Cookie": f"Token={jwt}",
                 "Content-Type": "text/html"
+                "User-Dude": "Mike"
             }
         }    
     else:
