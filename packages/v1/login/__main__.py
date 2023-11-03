@@ -5,6 +5,7 @@ import jinja2
 import jwt
 
 
+ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
 SECRET = 'mysecret'
 
 
@@ -19,26 +20,40 @@ def validate_jwt(jwt: str):
 
 
 def html_reponse(event):
+
     method = event.get('http', {}).get("method", "")
     if method.lower() == 'post':
         jwt = create_jwt(event['username'], event['password'])
-        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-        template = environment.get_template("authenticated.html")
+        template = ENVIRONMENT.get_template("authenticated.html")
         return {
             "statusCode": 200,
-            "body": template.render(event = json.dumps(event)),
+            "body": template.render(event = json.dumps(event), user = event['username']),
             "headers": {
                 "Set-Cookie": f"Token={jwt}",
                 "Content-Type": "text/html",
             }
         }    
-    else:
-        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-        template = environment.get_template("unauthenticated.html")
+    elif method.lower() == 'get':
+        if event.get('cookie', ""):
+            cookie = dict(key_val_pair.split('=') for key_val_pair in event['cookie'])
+            user_dict = validate_jwt(cookie)
+            template = ENVIRONMENT.get_template("authenticated.html")
+            return {
+                "statusCode": 200,
+                "body": template.render(event = json.dumps(event), user = user_dict['user']),
+                "headers": {
+                    "Content-Type": "text/html",
+                }
+            }         
+
+        template = ENVIRONMENT.get_template("unauthenticated.html")
         return {
             "statusCode": 200,
-            "body": template.render(event = json.dumps(event))
-        }
+            "body": template.render(event = json.dumps(event)),
+            "headers": {
+                "Content-Type": "text/html",
+            }
+        }    
 
 
 def main(event, context):
@@ -57,6 +72,6 @@ def main(event, context):
 # Debugging area:
 #
 if __name__ == '__main__':
-    response = main({'http':{'headers':{'accept':'text/html'}}}, "")
+    response = main({'http':{'method':'GET', 'headers':{'accept':'text/html'}}}, "")
     # response = main({}, "")
     print(response)
