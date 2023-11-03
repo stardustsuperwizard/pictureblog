@@ -18,7 +18,8 @@ def create_jwt(user: str, password: str):
 def validate_jwt(encoded_jwt: str):
     try:
         data = jwt.decode(encoded_jwt.strip(), SECRET, algorithms=['HS256'])
-    except jwt.ExpiredSignatureError:
+    # except jwt.ExpiredSignatureError:
+    except Error as e:
         data = False
     return data
 
@@ -45,7 +46,7 @@ def html_reponse(event):
                 template = ENVIRONMENT.get_template("authenticated.html")
                 return {
                     "statusCode": 200,
-                    "body": template.render(event = json.dumps(event), user = user_dict['user']),
+                    "body": template.render(event = json.dumps(event), user = valid_token['user']),
                     "headers": {
                         "Content-Type": "text/html",
                     }
