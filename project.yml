@@ -1,5 +1,9 @@
 packages:
   - name: v1
+    environment:
+      ADMIN_NAME: ${ADMIN_NAME}
+      ADMIN_PASS: ${ADMIN_PASS}
+      JWTKey: ${JWTKey}
     functions:
       - name: index
         runtime: 'python:3.11'
