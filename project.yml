@@ -3,4 +3,5 @@ packages:
     functions:
       - name: gateway
         main: gateway.py
+        limits:
           timeout: 30000
