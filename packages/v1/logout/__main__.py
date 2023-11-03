@@ -9,15 +9,15 @@ ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
 
 
 def html_reponse(event):
-    method = event.get('http', {}).get('headers', {}).get("method", "")
-    if event.get('headers', {}).get('cookie', ""):
+    method = event.get('http', {}).get("method", "")
+    if event.get('http', {}).get('headers', {}).get('cookie', ""):
         cookie = dict(key_val_pair.split('=') for key_val_pair in event['cookie'])
         template = ENVIRONMENT.get_template("base.html")
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event)),
             "headers":{
-                "Set-Cookie": f"Token={cookie['Token']}; Max-Age=0; Max-Age=60; Secure; HttpOnly",
+                "Set-Cookie": f"Token={cookie['Token']}; Max-Age=0; Secure; HttpOnly",
             }
         }
     else:
