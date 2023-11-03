@@ -11,25 +11,24 @@ SECRET = 'mysecret'
 
 
 def create_jwt(user: str, password: str):
-    encoded_jwt = jwt.encode({'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=30), 'user': user}, SECRET, algorithm='HS256')
+    encoded_jwt = jwt.encode({'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=300), 'user': user}, SECRET, algorithm='HS256')
     return encoded_jwt
 
 
 def validate_jwt(encoded_jwt: str):
     try:
         data = jwt.decode(encoded_jwt.strip(), SECRET, algorithms=['HS256'])
-    # except jwt.ExpiredSignatureError:
     except Exception as e:
         data = False
     return data
 
 
 def html_reponse(event):
-
     method = event.get('http', {}).get("method", "")
+    template = ENVIRONMENT.get_template("authenticated.html")
+
     if method.lower() == 'post':
         valid_token = create_jwt(event['username'], event['password'])
-        template = ENVIRONMENT.get_template("authenticated.html")
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event), user = event['username']),
@@ -43,7 +42,6 @@ def html_reponse(event):
             cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
             valid_token = validate_jwt(cookie['Token'])
             if valid_token:
-                template = ENVIRONMENT.get_template("authenticated.html")
                 return {
                     "statusCode": 200,
                     "body": template.render(event = json.dumps(event), user = valid_token['user']),
