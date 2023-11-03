@@ -12,12 +12,12 @@ import jwt
 
 ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
 SECRET = os.environ['JWTKey']
-CREDENTIALS = Template(b"$user:$password")
+CREDENTIALS = Template("$user:$password")
 
 
 def create_jwt(user: str, password: str):
-    presented_user = base64.b64encode(CREDENTIALS.substitute(user=user, password=password))
-    authorized_user = base64.b64encode(CREDENTIALS.substitute(user=os.environ['ADMIN_NAME'], password=os.environ['ADMIN_PASS']))
+    presented_user = base64.b64encode(CREDENTIALS.substitute(user=user, password=password).encode())
+    authorized_user = base64.b64encode(CREDENTIALS.substitute(user=os.environ['ADMIN_NAME'], password=os.environ['ADMIN_PASS']).encode())
     if presented_user == authorized_user:
         return jwt.encode({'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=300), 'user': user}, SECRET, algorithm='HS256')
     return False
