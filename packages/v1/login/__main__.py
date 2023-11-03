@@ -9,7 +9,7 @@ SECRET = 'mysecret'
 
 
 def create_jwt(user: str, password: str):
-    encoded_jwt = jwt.encode({'user': user}, SECRETKEY, algorithm='HS256')
+    encoded_jwt = jwt.encode({'user': user}, SECRET, algorithm='HS256')
     return encoded_jwt
 
 
