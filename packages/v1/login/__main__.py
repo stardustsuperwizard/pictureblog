@@ -1,18 +1,23 @@
+import base64
 import datetime
 import json
 import logging
+import os
 
 import jinja2
 import jwt
 
 
 ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-SECRET = 'mysecret'
+SECRET = os.environ['JWTKey']
 
 
 def create_jwt(user: str, password: str):
-    encoded_jwt = jwt.encode({'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=300), 'user': user}, SECRET, algorithm='HS256')
-    return encoded_jwt
+    presented_user = base64.b64encode(bf"{user}:{password}")
+    authorized_user = base64.b64encode(bf"{os.environ['ADMIN_NAME']}:{os.environ['ADMIN_PASS']}")
+    if presented_user == authorized_user:
+        return jwt.encode({'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=300), 'user': user}, SECRET, algorithm='HS256')
+    return False
 
 
 def validate_jwt(encoded_jwt: str):
@@ -25,18 +30,19 @@ def validate_jwt(encoded_jwt: str):
 
 def html_reponse(event):
     method = event.get('http', {}).get("method", "")
+    
     template = ENVIRONMENT.get_template("authenticated.html")
-
     if method.lower() == 'post':
         valid_token = create_jwt(event['username'], event['password'])
-        return {
-            "statusCode": 200,
-            "body": template.render(event = json.dumps(event), user = event['username']),
-            "headers": {
-                "Set-Cookie": f"Token={valid_token}; Max-Age=300; Secure; HttpOnly",
-                "Content-Type": "text/html",
-            }
-        }    
+        if valid_token:
+            return {
+                "statusCode": 200,
+                "body": template.render(event = json.dumps(event), user = event['username']),
+                "headers": {
+                    "Set-Cookie": f"Token={valid_token}; Max-Age=300; Secure; HttpOnly",
+                    "Content-Type": "text/html",
+                }
+            }    
     elif method.lower() == 'get':
         if event.get('http', {}).get('headers', {}).get('cookie'):
             cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
