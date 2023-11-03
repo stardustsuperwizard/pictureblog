@@ -12,19 +12,24 @@ def html_reponse(event):
     method = event.get('http', {}).get("method", "")
     if event.get('http', {}).get('headers', {}).get('cookie', ""):
         cookie = dict(key_val_pair.split('=') for key_val_pair in event['cookie'])
+        jwt = cookie['Token']
         template = ENVIRONMENT.get_template("base.html")
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event)),
             "headers":{
-                "Set-Cookie": f"Token={cookie['Token']}; Max-Age=0; Secure; HttpOnly",
+                "Content-Type": "text/html",
+                "Set-Cookie": f"Token={jwt}; Max-Age=0; Secure; HttpOnly",
             }
         }
     else:
         template = ENVIRONMENT.get_template("base.html")
         return {
             "statusCode": 200,
-            "body": template.render(event = json.dumps(event))
+            "body": template.render(event = json.dumps(event)),
+            "headers":{
+                "Content-Type": "text/html",
+            }
         }
 
 
