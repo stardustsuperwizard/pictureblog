@@ -62,7 +62,7 @@ def html_reponse(event):
     template = ENVIRONMENT.get_template("unauthenticated.html")
     return {
         "statusCode": 200,
-        "body": template.render(event = json.dumps(event), env = os.environ['ADMIN_USER']),
+        "body": template.render(event = json.dumps(event), env = os.environ['ADMIN_NAME']),
         "headers": {
             "Content-Type": "text/html",
         }
