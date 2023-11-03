@@ -9,10 +9,6 @@ packages:
         runtime: 'python:3.11'
         limits:
           timeout: 30000
-      - name: hello
-        runtime: 'python:3.11'
-        limits:
-          timeout: 30000
       - name: login
         runtime: 'python:3.11'
         limits:
