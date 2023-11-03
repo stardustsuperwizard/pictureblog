@@ -19,7 +19,7 @@ def validate_jwt(encoded_jwt: str):
     try:
         data = jwt.decode(encoded_jwt.strip(), SECRET, algorithms=['HS256'])
     # except jwt.ExpiredSignatureError:
-    except Error as e:
+    except Exception as e:
         data = False
     return data
 
@@ -77,7 +77,8 @@ def main(event, context):
 #
 # Debugging area:
 #
-# if __name__ == '__main__':
-#     response = main({'http':{'method':'GET', 'headers':{'cookie':'Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ.6O7zatr8KRQaz91wY--6IhVTc3MqGl0fDToaMihUahA', 'accept':'text/html'}}}, "")
-#     # response = main({}, "")
-#     print(response)
+if __name__ == '__main__':
+    # response = main({'http':{'method':'GET', 'headers':{'cookie':'Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ.6O7zatr8KRQaz91wY--6IhVTc3MqGl0fDToaMihUahA', 'accept':'text/html'}}}, "")
+    response = main({'http':{'method':'GET', 'headers':{'accept':'text/html'}}}, "")
+    # response = main({}, "")
+    print(response)
