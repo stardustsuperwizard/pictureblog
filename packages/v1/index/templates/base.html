@@ -10,7 +10,7 @@
     <h1>Hello, {{ user }}</h1>
     <a href="/api/v1/logout">Logout</a>
     {% else %}
-    <h1>Hello, stranger</h1>
+    <h1>Hello, {{ user }}</h1>
     <a href="/api/v1/login">Login</a>
     {% endif %}
     <p>{{ event }}</p>

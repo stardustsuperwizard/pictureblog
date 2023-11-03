@@ -20,23 +20,18 @@ def validate_jwt(encoded_jwt: str):
 def html_reponse(event):
     method = event.get('http', {}).get("method", "")
     
+    user = 'stranger'
     template = ENVIRONMENT.get_template("base.html")
-    if method.lower() == 'get':
-        if event.get('http', {}).get('headers', {}).get('cookie'):
-            cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
-            valid_token = validate_jwt(cookie['Token'])
-            if valid_token:
-                return {
-                    "statusCode": 200,
-                    "body": template.render(event = json.dumps(event), user = valid_token['user']),
-                    "headers": {
-                        "Content-Type": "text/html",
-                    }
-                }
+    
+    if event.get('http', {}).get('headers', {}).get('cookie'):
+        cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
+        valid_token = validate_jwt(cookie['Token'])
+        if valid_token:
+            user = valid_token['user']
 
     return {
         "statusCode": 200,
-        "body": template.render(event = json.dumps(event)),
+        "body": template.render(event = json.dumps(event), user = user),
         "headers": {
             "Content-Type": "text/html",
         }
@@ -44,7 +39,6 @@ def html_reponse(event):
 
 
 def json_response(event):
-
     user = 'stranger'
     if event.get('token'):
         valid_token = validate_jwt(event['token'])
@@ -67,3 +61,12 @@ def main(event, context):
     else:
         response = json_response(event)
     return response
+
+
+#
+# Debugging area:
+#
+# if __name__ == '__main__':
+#     response = main({'http':{'headers':{'cookie':'Token=athing', 'accept':'text/html'}}}, "")
+#     # response = main({}, "")
+#     print(response)
