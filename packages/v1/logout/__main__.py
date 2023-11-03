@@ -48,7 +48,7 @@ def main(event, context):
 #
 # Debugging area:
 #
-if __name__ == '__main__':
-    response = main({'http':{'headers':{'cookie':'Token=athing', 'accept':'text/html'}}}, "")
-    # response = main({}, "")
-    print(response)
+# if __name__ == '__main__':
+#     response = main({'http':{'headers':{'cookie':'Token=athing', 'accept':'text/html'}}}, "")
+#     # response = main({}, "")
+#     print(response)

@@ -14,8 +14,8 @@ def create_jwt(user: str, password: str):
     return encoded_jwt
 
 
-def validate_jwt(jwt: str):
-    data = jwt.decode(jwt, SECRET, algorithms=['HS256'])
+def validate_jwt(encoded_jwt: str):
+    data = jwt.decode(encoded_jwt.strip(), SECRET, algorithms=['HS256'])
     return data
 
 
@@ -36,7 +36,7 @@ def html_reponse(event):
     elif method.lower() == 'get':
         if event.get('http', {}).get('headers', {}).get('cookie'):
             cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
-            user_dict = validate_jwt(cookie)
+            user_dict = validate_jwt(cookie['Token'])
             template = ENVIRONMENT.get_template("authenticated.html")
             return {
                 "statusCode": 200,
@@ -72,6 +72,6 @@ def main(event, context):
 # Debugging area:
 #
 # if __name__ == '__main__':
-#     response = main({'http':{'method':'GET', 'headers':{'accept':'text/html'}}}, "")
+#     response = main({'http':{'method':'GET', 'headers':{'cookie':'Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ.6O7zatr8KRQaz91wY--6IhVTc3MqGl0fDToaMihUahA', 'accept':'text/html'}}}, "")
 #     # response = main({}, "")
 #     print(response)
