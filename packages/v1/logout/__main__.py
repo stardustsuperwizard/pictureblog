@@ -10,8 +10,8 @@ ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
 
 def html_reponse(event):
     method = event.get('http', {}).get("method", "")
-    if event.get('http', {}).get('headers', {}).get('cookie', ""):
-        cookie = dict(key_val_pair.split('=') for key_val_pair in event['cookie'])
+    if event.get('http', {}).get('headers', {}).get('cookie'):
+        cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
         jwt = cookie['Token']
         template = ENVIRONMENT.get_template("base.html")
         return {
@@ -49,6 +49,6 @@ def main(event, context):
 # Debugging area:
 #
 if __name__ == '__main__':
-    response = main({'http':{'headers':{'accept':'text/html'}}}, "")
+    response = main({'http':{'headers':{'cookie':'Token=athing', 'accept':'text/html'}}}, "")
     # response = main({}, "")
     print(response)
