@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div>
+    <p>Hello, {{ user }}</p>
     <form action="/api/v1/logout" method="POST" class="login">
         <input type="submit" value="Logout">
     </form>
