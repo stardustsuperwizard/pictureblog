@@ -29,12 +29,12 @@ def html_reponse(event):
             "statusCode": 200,
             "body": template.render(event = json.dumps(event), user = event['username']),
             "headers": {
-                "Set-Cookie": f"Token={jwt}",
+                "Set-Cookie": f"Token={jwt}; Max-Age=60; Secure; HttpOnly",
                 "Content-Type": "text/html",
             }
         }    
     elif method.lower() == 'get':
-        if event.get('cookie', ""):
+        if event.get('headers', {}).get('cookie'):
             cookie = dict(key_val_pair.split('=') for key_val_pair in event['cookie'])
             user_dict = validate_jwt(cookie)
             template = ENVIRONMENT.get_template("authenticated.html")
