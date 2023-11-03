@@ -8,10 +8,10 @@
 <body>
     {% if user %}
     <h1>Hello, {{ user }}</h1>
-    <a href="/api/v1/logout">Logout</a>
+    <a href="/api/v1/login"><button>Login</button></a>
     {% else %}
     <h1>Hello, {{ user }}</h1>
-    <a href="/api/v1/login">Login</a>
+    <a href="/api/v1/logout"><button>Logout</button></a>
     {% endif %}
     <p>{{ event }}</p>
 </body>
