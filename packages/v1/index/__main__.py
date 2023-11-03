@@ -20,7 +20,7 @@ def validate_jwt(encoded_jwt: str):
 def html_reponse(event):
     method = event.get('http', {}).get("method", "")
     
-    user = 'stranger'
+    user = None
     template = ENVIRONMENT.get_template("base.html")
     
     if event.get('http', {}).get('headers', {}).get('cookie'):
