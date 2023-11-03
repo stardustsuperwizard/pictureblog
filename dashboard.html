@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Dashboard</title>
 
     <script src="js/EasyHTTP.js"></script>
 
     <script defer src="js/alpine.js"></script>
 </head>
 <body>
-    <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
+    <h1>Dashboard</h1>
     <div x-data="{ getData: main() }">
         <p x-text="getData"></p>
         <button x-on:click="getData = null">Clear</button>
