@@ -28,7 +28,7 @@ def html_reponse(event):
             "statusCode": 200,
             "body": template.render(event = json.dumps(event)),
             "headers": {
-                "Set-Cookie": f"Token={jwt},"
+                "Set-Cookie": f"Token={jwt}",
                 "Content-Type": "text/html"
             }
         }    
