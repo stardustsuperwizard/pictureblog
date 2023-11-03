@@ -45,7 +45,7 @@ def html_reponse(event):
 def main(event, context):
     response = event
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
-        response = f"<html><body><h1>Homepage</h1><p>{json.dumps(event, indent=4)}</p></body></html>"
+        response = html_reponse(event)
     else:
         response = {
         "statusCode": 200,
