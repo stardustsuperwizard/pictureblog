@@ -29,8 +29,7 @@ def html_reponse(event):
             "body": template.render(event = json.dumps(event)),
             "headers": {
                 "Set-Cookie": f"Token={jwt}",
-                "Content-Type": "text/html"
-                "User-Dude": "Mike"
+                "Content-Type": "text/html",
             }
         }    
     else:
@@ -57,7 +56,7 @@ def main(event, context):
 #
 # Debugging area:
 #
-# if __name__ == '__main__':
-#     response = main({'http':{'headers':{'accept':'text/html'}}}, "")
-#     # response = main({}, "")
-#     print(response)
+if __name__ == '__main__':
+    response = main({'http':{'headers':{'accept':'text/html'}}}, "")
+    # response = main({}, "")
+    print(response)
