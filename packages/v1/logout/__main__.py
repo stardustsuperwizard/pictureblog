@@ -16,9 +16,9 @@ def html_reponse(event):
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event)),
-            "headers":
+            "headers":{
                 "Set-Cookie": f"Token={cookie['Token']}; Max-Age=0; Max-Age=60; Secure; HttpOnly",
-
+            }
         }
     else:
         template = ENVIRONMENT.get_template("base.html")
@@ -43,7 +43,7 @@ def main(event, context):
 #
 # Debugging area:
 #
-# if __name__ == '__main__':
-#     response = main({'http':{'headers':{'accept':'text/html'}}}, "")
-#     # response = main({}, "")
-#     print(response)
+if __name__ == '__main__':
+    response = main({'http':{'headers':{'accept':'text/html'}}}, "")
+    # response = main({}, "")
+    print(response)
