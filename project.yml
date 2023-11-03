@@ -1,11 +1,11 @@
 packages:
   - name: api
     functions:
-      - name: v1
+      - name: index
         runtime: 'python:3.11'
         limits:
           timeout: 30000
-        actions:
-          - name: index
-            runtime: 'python:3.11'
-          - name: hello
+      - name: hello
+        runtime: 'python:3.11'
+        limits:
+          timeout: 30000
