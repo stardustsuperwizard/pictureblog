@@ -1,0 +1,6 @@
+packages:
+  - name: pictureblog
+    functions:
+      - name: gateway
+        main: gateway.py
+          timeout: 30000
