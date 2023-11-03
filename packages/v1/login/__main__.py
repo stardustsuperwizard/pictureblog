@@ -1,15 +1,26 @@
 import json
 import logging
 
+import jinja2
+
+
+def html_reponse(event):
+    environment = jinja2.Environment(loader=FileSystemLoader("templates/"))
+    template = environment.get_template("template.html")
+    return {
+        "statusCode": 200,
+        "body": template.render()
+    }
+
 
 def main(event, context):
-    status = 200
+    response = {}
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
-        response = f"<html><body><h1>Homepage</h1><p>{json.dumps(event, indent=4)}</p></body></html>"
+        reponse = html_reponse(event)
     else:
-        response = {"message": event}
-    return {
-        "statusCode": status,
+        response = {
+        "statusCode": 200,
         "body": response
     }
+    return response
 
