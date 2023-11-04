@@ -21,7 +21,7 @@ def html_reponse(event):
     method = event.get('http', {}).get("method", "")
     
     user = False
-    template = ENVIRONMENT.get_template("base.html")
+    template = ENVIRONMENT.get_template("index.html")
     
     if event.get('http', {}).get('headers', {}).get('cookie'):
         cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';')]
