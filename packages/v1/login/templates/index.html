@@ -4,7 +4,7 @@
 <h1>Login</h1>
 {% if user %}
 <p>You are logged in as: {{ user }}</p>
-<a href="/api/v1/index"><button>Home</button></a>
+<a href="/api/v1/home"><button>Home</button></a>
 <a href="/api/v1/logout"><button>Logout</button></a>
 {% else %}
 <div>
@@ -15,7 +15,7 @@
     </form>
 </div>
 <div>
-    <a href="/api/v1/index"><button>Home</button></a>
+    <a href="/api/v1/home"><button>Home</button></a>
 </div>
 {% endif %}
 <p>{{ event }}</p>
