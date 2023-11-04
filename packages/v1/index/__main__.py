@@ -24,7 +24,7 @@ def html_reponse(event):
     template = ENVIRONMENT.get_template("base.html")
     
     if event.get('http', {}).get('headers', {}).get('cookie'):
-        cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';'))]
+        cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';')]
         for cookie in cookies:
             if 'Token=' in cookie:
                 token = cookie.split('=')[1]
