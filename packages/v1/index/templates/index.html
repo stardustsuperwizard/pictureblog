@@ -2,7 +2,12 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <h1>Home</h1>
+{% if user %}
+<p>Hello, {{ user }}</p>
 <a href="/api/v1/upload">Create and Upload</a>
 <a href="/api/v1/logout">Logout</a>
+{% else %}
+<p>Hello, stranger!</p>
+{% endif %}
 <p>{{ event }}</p>
 {% endblock %}

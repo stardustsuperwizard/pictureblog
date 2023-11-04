@@ -1,5 +1,12 @@
 {% extends "base.html" %}
+{% block title %}Home{% endblock %}
 {% block content %}
+<h1>Home</h1>
+{% if user %}
+<p>Hello, {{ user }}</p>
+<a href="/api/v1/index">Home</a>
+<a href="/api/v1/logout">Logout</a>
+{% else %}
 <div>
     <form method="POST" class="login">
         <input type="text" name="username" id="" placeholder="username">
@@ -7,4 +14,6 @@
         <input type="submit" value="Login">
     </form>
 </div>
+{% endif %}
+<p>{{ event }}</p>
 {% endblock %}

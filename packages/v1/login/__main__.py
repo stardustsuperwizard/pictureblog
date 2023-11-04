@@ -33,8 +33,9 @@ def validate_jwt(encoded_jwt: str):
 
 def html_reponse(event):
     method = event.get('http', {}).get("method", "")
-    
-    template = ENVIRONMENT.get_template("authenticated.html")
+    user = False
+    template = ENVIRONMENT.get_template("index.html")
+
     if method.lower() == 'post':
         valid_token = create_jwt(event['username'], event['password'])
         if valid_token:
@@ -62,7 +63,6 @@ def html_reponse(event):
                             }
                         }
 
-    template = ENVIRONMENT.get_template("unauthenticated.html")
     return {
         "statusCode": 200,
         "body": template.render(event = json.dumps(event)),
