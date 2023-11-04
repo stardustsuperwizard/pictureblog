@@ -17,7 +17,11 @@ packages:
         runtime: 'python:3.11'
         limits:
           timeout: 30000
-  - name: app
+      - name: create
+        runtime: 'python:3.11'
+        limits:
+          timeout: 30000
+  - name: frontend
     environment:
       ADMIN_NAME: ${ADMIN_NAME}
       ADMIN_PASS: ${ADMIN_PASS}
@@ -28,6 +32,10 @@ packages:
         limits:
           timeout: 30000
       - name: home
+        runtime: 'python:3.11'
+        limits:
+          timeout: 30000
+      - name: create
         runtime: 'python:3.11'
         limits:
           timeout: 30000
