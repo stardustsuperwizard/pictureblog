@@ -33,7 +33,7 @@ def html_reponse(event):
                     if valid_token:
                         user = valid_token['user']
                         template = ENVIRONMENT.get_template("index.html")
-                        page = template.render(event = json.dumps(event))
+                        page = template.render(event = json.dumps(event), photo = event['photo'], comment = event['comment'])
                         return {
                             "statusCode": status,
                             "body": page,
