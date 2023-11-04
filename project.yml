@@ -5,7 +5,7 @@ packages:
       ADMIN_PASS: ${ADMIN_PASS}
       JWTKey: ${JWTKey}
       JWTSECRET: ${JWTSECRET}
-      LOG_DESTINATIONS: ${_self.FUNCTIONS_LOG_DESTINATION_JSON}
+      LOG_DESTINATIONS: ${LOG_DESTINATIONS}
     functions:
       - name: index
         runtime: 'python:3.11'
@@ -41,7 +41,7 @@ packages:
       ADMIN_PASS: ${ADMIN_PASS}
       JWTKey: ${JWTKey}
       JWTSECRET: ${JWTSECRET}
-      LOG_DESTINATIONS: ${_self.FUNCTIONS_LOG_DESTINATION_JSON}
+      LOG_DESTINATIONS: ${LOG_DESTINATIONS}
     functions:
       - name: home
         runtime: 'python:3.11'
