@@ -27,7 +27,7 @@ def html_reponse(event):
         cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';')]
         for cookie in cookies:
             if 'Token=' in cookie:
-                token = cookie.split('=')[1]
+                token = cookie.split('=')[1].strip()
                 valid_token = validate_jwt(cookie['Token'])
                 if valid_token:
                     user = valid_token['user']
