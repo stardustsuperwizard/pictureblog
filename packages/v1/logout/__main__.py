@@ -8,16 +8,16 @@ ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
 
 
 def html_reponse(event):
+    template = ENVIRONMENT.get_template("base.html")
     method = event.get('http', {}).get("method", "")
     if event.get('http', {}).get('headers', {}).get('cookie'):
         cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';')]
         for cookie in cookies:
             if 'Token=' in cookie:
                 token = cookie.split('=')[1].strip()
-                template = ENVIRONMENT.get_template("base.html")
                 return {
                     "statusCode": 200,
-                    "body": template.render(event = json.dumps(event)),
+                    "body": template.render(event = json.dumps(event), message="Found the Token."),
                     "headers":{
                         "Content-Type": "text/html",
                         "Set-Cookie": f"Token={token}; Path=/; Max-Age=0; Secure; HttpOnly",
@@ -27,7 +27,7 @@ def html_reponse(event):
                 template = ENVIRONMENT.get_template("base.html")
                 return {
                     "statusCode": 200,
-                    "body": template.render(event = json.dumps(event)),
+                    "body": template.render(event = json.dumps(event), message="Did not find the Token."),
                     "headers":{
                         "Content-Type": "text/html",
                     }
@@ -36,7 +36,7 @@ def html_reponse(event):
         template = ENVIRONMENT.get_template("base.html")
         return {
             "statusCode": 200,
-            "body": template.render(event = json.dumps(event)),
+            "body": template.render(event = json.dumps(event), message="No Cookies."),
             "headers":{
                 "Content-Type": "text/html",
             }
