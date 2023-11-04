@@ -24,10 +24,13 @@ def html_reponse(event):
     template = ENVIRONMENT.get_template("base.html")
     
     if event.get('http', {}).get('headers', {}).get('cookie'):
-        cookie = dict(key_val_pair.split('=') for key_val_pair in event['http']['headers']['cookie'].split(';'))
-        valid_token = validate_jwt(cookie['Token'])
-        if valid_token:
-            user = valid_token['user']
+        cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';'))]
+        for cookie in cookies:
+            if 'Token=' in cookie:
+                token = cookie.split('=')[1]
+                valid_token = validate_jwt(cookie['Token'])
+                if valid_token:
+                    user = valid_token['user']
 
     return {
         "statusCode": 200,
