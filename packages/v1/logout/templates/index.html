@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Logout{% endblock %}
+{% block content %}
+<h1>Logout</h1>
+<p>{{ message }}</p>
+<p>You are logged out.</p>
+<p>Cookies Available: {{cookies}}</p>
+<a href="/api/v1/index"><button>Home</button></a>
+<a href="/api/v1/login"><button>Login</button></a>
+<p>{{event}}</p>
+{% endblock %}

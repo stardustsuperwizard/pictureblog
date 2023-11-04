@@ -9,7 +9,7 @@ ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
 
 
 def html_reponse(event):
-    template = ENVIRONMENT.get_template("base.html")
+    template = ENVIRONMENT.get_template("index.html")
     method = event.get('http', {}).get("method", "")
     if event.get('http', {}).get('headers', {}).get('cookie'):
         cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';')]
