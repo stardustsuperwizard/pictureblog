@@ -12,7 +12,7 @@
 <body>
     <h1>Welcome Page</h1>
     <div x-data="{ getData: main() }">
-        <p x-text="getData.message"></p>
+        <p x-text="getData"></p>
     </div>
 
 
@@ -23,7 +23,7 @@
         const http = new EasyHTTP();
         async function main() {
             let data = await http.get('/api/v1/index');
-            return data
+            return JSON.stringify(data)
         }
     </script>
 </body>
