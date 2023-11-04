@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Welcome Page</title>
 
     <script src="js/EasyHTTP.js"></script>
 
     <script defer src="js/alpine.js"></script>
 </head>
 <body>
-    <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
+    <h1>Welcome Page</h1>
     <div x-data="{ getData: main() }">
         <p x-text="getData"></p>
     </div>
 
+
+    <footer>
+        <p x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></p>
+      </footer>
     <script>
         const http = new EasyHTTP();
         async function main() {
