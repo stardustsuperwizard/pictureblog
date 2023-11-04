@@ -6,7 +6,7 @@ import jwt
 
 
 ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-SECRET = os.environ['JWTKey']
+SECRET = os.environ['LANG']
 
 
 def validate_jwt(encoded_jwt: str):
@@ -29,6 +29,10 @@ def html_reponse(event):
         if valid_token:
             user = valid_token['user']
             template = ENVIRONMENT.get_template("index.html")
+            page = template.render(event = json.dumps(event))
+        else:
+            status = 401
+            template = ENVIRONMENT.get_template("401.html")
             page = template.render(event = json.dumps(event))
     else:
         status = 401
@@ -59,7 +63,7 @@ def main(event, context):
 #
 # Debugging area:
 #
-# if __name__ == '__main__':
-#     response = main({'http':{'headers':{'cookie':'Token=athing', 'accept':'text/html'}}}, "")
-#     # response = main({}, "")
-#     print(response)
+if __name__ == '__main__':
+    response = main({'http':{'headers':{'cookie':'Token=athing', 'accept':'text/html'}}}, "")
+    # response = main({}, "")
+    print(response)
