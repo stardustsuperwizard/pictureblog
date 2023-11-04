@@ -105,6 +105,7 @@ def json_response(event):
 
 
 def main(event, context):
+    logging.info("hello world!")
     response = {}
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
         response = html_reponse(event)
