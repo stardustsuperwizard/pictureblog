@@ -1,0 +1,11 @@
+{% extends base.html %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1>Create Entry</h1>
+<form action="/api/v1/create" method="post">
+    <input type="file" id="photo" name="photo" accept="image/png, image/jpeg" />
+    <textarea id="comment" name="comment" rows="10" cols="100"></textarea>
+    <input type="submit" value="Create Post">
+</form>
+<p>{{ event }}</p>
+{% endblock %}
