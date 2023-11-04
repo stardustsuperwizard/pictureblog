@@ -35,10 +35,6 @@ packages:
         runtime: 'python:3.11'
         limits:
           timeout: 30000
-      - name: home
-        runtime: 'python:3.11'
-        limits:
-          timeout: 30000
       - name: upload
         runtime: 'python:3.11'
         limits:
