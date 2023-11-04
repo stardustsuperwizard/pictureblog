@@ -27,7 +27,7 @@ def html_reponse(event):
                 template = ENVIRONMENT.get_template("base.html")
                 return {
                     "statusCode": 200,
-                    "body": template.render(event = json.dumps(event), message="Did not find the Token."),
+                    "body": template.render(event = json.dumps(event), message="Did not find the Token.", cookies=cookies),
                     "headers":{
                         "Content-Type": "text/html",
                     }
