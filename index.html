@@ -13,13 +13,12 @@
     <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
     <div x-data="{ getData: main() }">
         <p x-text="getData"></p>
-        <button x-on:click="getData = null">Clear</button>
     </div>
 
     <script>
         const http = new EasyHTTP();
         async function main() {
-            let data = await http.get('https://jsonplaceholder.typicode.com/users');
+            let data = await http.get('/api/v1/index');
             return data
         }
     </script>
