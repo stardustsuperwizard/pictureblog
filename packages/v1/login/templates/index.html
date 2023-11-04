@@ -3,7 +3,8 @@
 {% block content %}
 <h1>Login</h1>
 {% if user %}
-<p>Hello, {{ user }}</p>
+<p>You are logged in as: {{ user }}</p>
+<a href="/api/v1/index"><button>Home</button></a>
 <a href="/api/v1/logout"><button>Logout</button></a>
 {% else %}
 <div>

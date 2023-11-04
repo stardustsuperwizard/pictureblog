@@ -4,7 +4,9 @@
 <h1>Logout</h1>
 <p>{{ message }}</p>
 <p>You are logged out.</p>
+{% if cookies %}
 <p>Cookies Available: {{cookies}}</p>
+{% endif %}
 <a href="/api/v1/index"><button>Home</button></a>
 <a href="/api/v1/login"><button>Login</button></a>
 <p>{{event}}</p>
