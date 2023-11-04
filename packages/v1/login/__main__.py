@@ -42,7 +42,7 @@ def html_reponse(event):
                 "statusCode": 200,
                 "body": template.render(event = json.dumps(event), user = event['username']),
                 "headers": {
-                    "Set-Cookie": f"Token={valid_token}; Max-Age=300; Secure; HttpOnly",
+                    "Set-Cookie": f"Token={valid_token}; Path=/; Max-Age=300; Secure; HttpOnly",
                     "Content-Type": "text/html",
                 }
             }    
