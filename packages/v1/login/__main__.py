@@ -16,8 +16,8 @@ CREDENTIALS = Template("$user:$password")
 
 
 def create_jwt(user: str, password: str):
-    presented_user = base64.b64encode(CREDENTIALS.substitute(user=user, password=password).encode())
-    authorized_user = base64.b64encode(CREDENTIALS.substitute(user=os.environ['ADMIN_NAME'], password=os.environ['ADMIN_PASS']).encode())
+    presented_user = base64.b64encode(CREDENTIALS.substitute(user=user.lower(), password=password).encode())
+    authorized_user = base64.b64encode(CREDENTIALS.substitute(user=os.environ['ADMIN_NAME'].lower(), password=os.environ['ADMIN_PASS']).encode())
     if presented_user == authorized_user:
         return jwt.encode({'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=300), 'user': user}, SECRET, algorithm='HS256')
     return False
