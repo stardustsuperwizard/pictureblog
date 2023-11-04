@@ -25,17 +25,14 @@ def html_reponse(event):
                         "Set-Cookie": f"Token={token}; Path=/; Max-Age=0; Secure; HttpOnly",
                     }
                 }
-            else:
-                template = ENVIRONMENT.get_template("base.html")
-                return {
-                    "statusCode": 200,
-                    "body": template.render(event = json.dumps(event), message="Did not find the Token.", cookies=cookies),
-                    "headers":{
-                        "Content-Type": "text/html",
-                    }
-                }
+        return {
+            "statusCode": 200,
+            "body": template.render(event = json.dumps(event), message="Did not find the Token.", cookies=cookies),
+            "headers":{
+                "Content-Type": "text/html",
+            }
+        }
     else:
-        template = ENVIRONMENT.get_template("base.html")
         return {
             "statusCode": 200,
             "body": template.render(event = json.dumps(event), message="No Cookies."),
