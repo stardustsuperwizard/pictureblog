@@ -4,11 +4,11 @@
 <h1>Home</h1>
 {% if user %}
 <p>Hello, {{ user }}</p>
-<a href="/api/v1/upload">Create and Upload</a>
-<a href="/api/v1/logout">Logout</a>
+<a href="/api/v1/upload"><button>Create and Upload</button></a>
+<a href="/api/v1/logout"><button>Logout</button></a>
 {% else %}
 <p>Hello, stranger!</p>
-<a href="/api/v1/login">Login</a>
+<a href="/api/v1/login"><button>Login</button></a>
 {% endif %}
 <p>{{ event }}</p>
 {% endblock %}
