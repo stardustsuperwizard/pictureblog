@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 import jinja2
@@ -13,6 +14,7 @@ def html_reponse(event):
     if event.get('http', {}).get('headers', {}).get('cookie'):
         cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';')]
         for cookie in cookies:
+            logging.info(cookie)
             if 'Token=' in cookie:
                 token = cookie.split('=')[1].strip()
                 return {
