@@ -35,19 +35,11 @@ packages:
         runtime: 'python:3.11'
         limits:
           timeout: 30000
-  - name: frontend
-    environment:
-      ADMIN_NAME: ${ADMIN_NAME}
-      ADMIN_PASS: ${ADMIN_PASS}
-      JWTKey: ${JWTKey}
-      JWTSECRET: ${JWTSECRET}
-      LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
-    functions:
       - name: home
         runtime: 'python:3.11'
         limits:
           timeout: 30000
-      - name: create
+      - name: upload
         runtime: 'python:3.11'
         limits:
           timeout: 30000
