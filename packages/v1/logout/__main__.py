@@ -20,7 +20,16 @@ def html_reponse(event):
                     "body": template.render(event = json.dumps(event)),
                     "headers":{
                         "Content-Type": "text/html",
-                        "Set-Cookie": f"Token={token}; Max-Age=0; Secure; HttpOnly",
+                        "Set-Cookie": f"Token={token}; Path=/; Max-Age=0; Secure; HttpOnly",
+                    }
+                }
+            else:
+                template = ENVIRONMENT.get_template("base.html")
+                return {
+                    "statusCode": 200,
+                    "body": template.render(event = json.dumps(event)),
+                    "headers":{
+                        "Content-Type": "text/html",
                     }
                 }
     else:
