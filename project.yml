@@ -1,5 +1,5 @@
 packages:
-  - name: v1
+  - name: auth
     environment:
       ADMIN_NAME: ${ADMIN_NAME}
       ADMIN_PASS: ${ADMIN_PASS}
@@ -19,6 +19,14 @@ packages:
         runtime: 'python:3.11'
         limits:
           timeout: 30000
+  - name: crud
+    environment:
+      ADMIN_NAME: ${ADMIN_NAME}
+      ADMIN_PASS: ${ADMIN_PASS}
+      JWTKey: ${JWTKey}
+      JWTSECRET: ${JWTSECRET}
+      LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
+    functions:
       - name: create
         runtime: 'python:3.11'
         limits:
@@ -32,10 +40,6 @@ packages:
         limits:
           timeout: 30000
       - name: delete
-        runtime: 'python:3.11'
-        limits:
-          timeout: 30000
-      - name: upload
         runtime: 'python:3.11'
         limits:
           timeout: 30000

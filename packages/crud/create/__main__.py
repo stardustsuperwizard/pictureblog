@@ -19,6 +19,7 @@ def validate_jwt(encoded_jwt: str):
 
 
 def html_reponse(event):
+    template = ENVIRONMENT.get_template("index.html")
     method = event.get('http', {}).get("method", "")
     status = 200
     
@@ -32,7 +33,6 @@ def html_reponse(event):
                     valid_token = validate_jwt(token)
                     if valid_token:
                         user = valid_token['user']
-                        template = ENVIRONMENT.get_template("index.html")
                         page = template.render(event = json.dumps(event), photo = event['photo'], comment = event['comment'])
                         return {
                             "statusCode": status,
