@@ -43,7 +43,7 @@ def html_reponse(event):
                 "statusCode": 303,
                 "headers": {
                     "Set-Cookie": f"Token={valid_token}; Path=/; Max-Age=300; Secure; HttpOnly",
-                    "Location": "/api/v1/home",
+                    "Location": "/api/auth/home",
                 }
             }    
     elif method.lower() == 'get':
@@ -57,7 +57,7 @@ def html_reponse(event):
                         return {
                             "statusCode": 303,
                             "headers": {
-                                "Location": "/api/v1/home",
+                                "Location": "/api/auth/home",
                             }
                         }
 

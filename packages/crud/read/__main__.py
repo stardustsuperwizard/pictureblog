@@ -29,7 +29,7 @@ def html_reponse(event):
             for cookie in cookies:
                 if 'Token=' in cookie:
                     token = cookie.split('=')[1].strip()
-                    valid_token = validate_jwt(cookie['Token'])
+                    valid_token = validate_jwt(token)
                     if valid_token:
                         user = valid_token['user']
                         template = ENVIRONMENT.get_template("index.html")
