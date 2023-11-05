@@ -41,10 +41,8 @@ def html_reponse(event):
         if valid_token:
             return {
                 "statusCode": 303,
-                "body": {},
                 "headers": {
                     "Set-Cookie": f"Token={valid_token}; Path=/; Max-Age=300; Secure; HttpOnly",
-                    "Content-Type": "text/html",
                     "Location": "/api/v1/home",
                 }
             }    
@@ -57,10 +55,8 @@ def html_reponse(event):
                     valid_token = validate_jwt(token)
                     if valid_token:
                         return {
-                            "statusCode": 303,
-                            "body": template.render(event = json.dumps(event), user = valid_token['user']),
+                            "statusCode": 303,,
                             "headers": {
-                                "Content-Type": "text/html",
                                 "Location": "/api/v1/home",
                             }
                         }
