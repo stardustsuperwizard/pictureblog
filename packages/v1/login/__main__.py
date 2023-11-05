@@ -40,11 +40,12 @@ def html_reponse(event):
         valid_token = create_jwt(event['username'], event['password'])
         if valid_token:
             return {
-                "statusCode": 200,
-                "body": template.render(event = json.dumps(event), user = event['username']),
+                "statusCode": 303,
+                "body": {},
                 "headers": {
                     "Set-Cookie": f"Token={valid_token}; Path=/; Max-Age=300; Secure; HttpOnly",
                     "Content-Type": "text/html",
+                    "Location": "/api/v1/home",
                 }
             }    
     elif method.lower() == 'get':
@@ -56,10 +57,11 @@ def html_reponse(event):
                     valid_token = validate_jwt(token)
                     if valid_token:
                         return {
-                            "statusCode": 200,
+                            "statusCode": 303,
                             "body": template.render(event = json.dumps(event), user = valid_token['user']),
                             "headers": {
                                 "Content-Type": "text/html",
+                                "Location": "/api/v1/home",
                             }
                         }
 
@@ -81,7 +83,7 @@ def json_response(event):
         if not username or not password:
             return {
                 "statusCode": 401,
-                "body": {'message': 'user/name password incorrect.'},
+                "body": {'message': 'username or password incorrect.', 'data': {}, 'event': event},
                 "headers":{
                     "Content-Type": "application/json",
                 }
@@ -91,7 +93,7 @@ def json_response(event):
         if valid_token:
             return {
                 "statusCode": 200,
-                "body": {'token': valid_token, 'event': event},
+                "body": {'message':'Login successful!', 'data': {'token': valid_token}, 'event': event},
                 "headers": {
                     "Content-Type": "application/json",
                 }
@@ -100,7 +102,7 @@ def json_response(event):
     else:
         return {
             "statusCode": 401,
-            "body": {'message': 'Log in.', 'event': event},
+            "body": {'message': 'Log in.', 'data': {}, 'event': event},
             "headers":{
                 "Content-Type": "application/json",
             }
