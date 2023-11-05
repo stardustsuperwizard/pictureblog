@@ -55,7 +55,7 @@ def html_reponse(event):
                     valid_token = validate_jwt(token)
                     if valid_token:
                         return {
-                            "statusCode": 303,,
+                            "statusCode": 303,
                             "headers": {
                                 "Location": "/api/v1/home",
                             }
