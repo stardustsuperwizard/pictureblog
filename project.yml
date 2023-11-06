@@ -6,7 +6,7 @@ environment:
 packages:
   - name: auth
     functions:
-      - name: home
+      - name: user
         runtime: 'python:3.11'
         limits:
           timeout: 30000
@@ -18,9 +18,9 @@ packages:
         runtime: 'python:3.11'
         limits:
           timeout: 30000
-  - name: fediverse
+  - name: example
     functions:
-      - name: mastodon
+      - name: home
         environment:
           AUTHREQUIRED: 'true'
           HTTPMETHODS: 'get,post'

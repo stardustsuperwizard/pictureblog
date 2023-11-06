@@ -37,11 +37,12 @@ def html_reponse(event):
     if method.lower() == 'post':
         valid_token = create_jwt(event['username'], event['password'])
         if valid_token:
+            location = event.get('http', {}).get("headers", {}).get('referer', "/auth/user"),
             return {
                 "statusCode": 303,
                 "headers": {
                     "Set-Cookie": f"Token={valid_token}; Path=/; Max-Age=300; Secure; HttpOnly",
-                    "Location": "/auth/home",
+                    "Location": location,
                 }
             }    
     elif method.lower() == 'get':
