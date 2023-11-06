@@ -47,18 +47,11 @@ def json_authentication(event):
 
 def main(event, context):
     response = event
-    token = False
+
+
+    # Check if HTTP methods are valid.
     if event.get('http', {}).get('method', "") in METHODS: 
-        if AUTHENTICATION_REQUIRED:
-            if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
-                token = html_authentication(event)
-            elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
-                token = json_authenticated(event)
-            else:
-                return {
-                    "statusCode": 403,
-                    "body": {"message": "Incorrect headers."},
-                }
+        pass
     else:
         return {
             "statusCode": 405,
@@ -67,7 +60,63 @@ def main(event, context):
             },
         }
 
-    
+
+    # Check if HTTP Headers are valid.
+    if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
+        pass
+    elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
+        pass
+    else:
+        return {
+        "statusCode": 403,
+        "body": {"message": "403 Forbidden. Incorrect accept headers, please use either 'application/json' or 'text/html' in your request."},
+    }
+
+
+    # Check if authentication is required
+    token = False
+    if AUTHENTICATION_REQUIRED:
+        if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
+            token = html_authentication(event)
+        elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
+            token = json_authenticated(event)
+        
+        if token == False:
+            if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
+                return {
+                    "statusCode": 401,
+                    "body": "<html><body><h1>401 Unauthorized</h1><p>You do not have valid authorization credentials.</p></body></html>",
+                    "headers": {
+                        "Content-Type": "text/html",
+                    }
+                }
+            elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
+                return {
+                    "statusCode": 401,
+                    "body": { "message": "401 Unauthorized. You do not have valid authorization credentials.",
+                        "data": {},
+                        "event": event
+                    },
+                    "headers": {
+                        "Content-Type": "application/json",
+                    }
+                }
+
+
+    response_data = {}
+    if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
+        response = html_reponse(response_data, event, token)
+    elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
+        response = json_reponse(response_data, event, token)
+    else:
+        response = {
+        "statusCode": 418,
+        "body": "<html><body><p>418 I'm a teapot</p><p>Technically, everything is okay...for some reason you are getting this message instead of what you actually wanted.</p></body></html>",
+        "headers": {
+            "Content-Type": "text/html",
+        }
+    }
+
     return response
 
 
