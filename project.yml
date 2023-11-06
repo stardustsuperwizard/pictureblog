@@ -1,5 +1,4 @@
 environment:
-  LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
   ADMIN_NAME: ${ADMIN_NAME}
   ADMIN_PASS: ${ADMIN_PASS}
   JWTKey: ${JWTKey}
@@ -8,20 +7,28 @@ packages:
   - name: auth
     functions:
       - name: home
+        environment:
+          LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
         runtime: 'python:3.11'
         limits:
           timeout: 30000
       - name: login
+        environment:
+          LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
         runtime: 'python:3.11'
         limits:
           timeout: 30000
       - name: logout
+        environment:
+          LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
         runtime: 'python:3.11'
         limits:
           timeout: 30000
   - name: fediverse
     functions:
       - name: mastodon
+        environment:
+          LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
         runtime: 'python:3.11'
         limits:
           timeout: 30000
