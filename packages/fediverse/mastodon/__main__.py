@@ -1,8 +1,8 @@
-import json
 import os
 
 import jwt
 
+from . import router
 
 SECRET = os.environ['JWTKey']
 
@@ -10,6 +10,7 @@ AUTHENTICATION_REQUIRED = True
 METHODS = ["get", "post"]
 
 
+# Validation Methods
 def validate_jwt(encoded_jwt: str):
     try:
         data = jwt.decode(encoded_jwt.strip(), SECRET, algorithms=['HS256'])
@@ -19,8 +20,6 @@ def validate_jwt(encoded_jwt: str):
 
 
 def html_authentication(event):
-    status = 418
-    page = "<html><body><p>418 I'm a teapot</p><p>Technically, everything is okay...for some reason you are getting this message instead of what you actually wanted.</p></body></html>"    
     if event.get('http', {}).get('headers', {}).get('cookie'):
         cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';')]
         for cookie in cookies:
@@ -41,14 +40,11 @@ def json_authentication(event):
 
     if valid_token := create_jwt(username, password)
         return valid_token
-    else:
-        return False
+    
+    return False
 
 
 def main(event, context):
-    response = event
-
-
     # Check if HTTP methods are valid.
     if event.get('http', {}).get('method', "") in METHODS: 
         pass
@@ -103,11 +99,27 @@ def main(event, context):
                 }
 
 
-    response_data = {}
+    response_data = router.route(event, token)
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
-        response = html_reponse(response_data, event, token)
+        response_data['headers']['Content-Type'] = 'text/html'
+        template = ENVIRONMENT.get_template(response_data['template'])
+        page = template.render(event = json.dumps(event), response_data = response_data['data'])
+        response = {
+            "statusCode": response_data['statusCode'],
+            "body": page,
+            "headers": response_data['headers'],
+        }
     elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
-        response = json_reponse(response_data, event, token)
+        response_data['headers']['Content-Type'] = 'application/json'
+        response = {
+            "statusCode": response_data['statusCode'],
+            "body": {
+                "message": response_data['message'],
+                "data": response_data['data'],
+                "event": event,
+                },
+            "headers": response_data['headers']
+        }
     else:
         response = {
         "statusCode": 418,
@@ -122,7 +134,7 @@ def main(event, context):
 
 #
 # Debugging area:
-#a  a   
+# 
 if __name__ == '__main__':
     response = main({'http':{'headers':{'cookie':'Token=athing', 'accept':'text/html'}}}, "")
     # response = main({}, "")
