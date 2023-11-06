@@ -34,15 +34,16 @@ def html_reponse(event):
     user = False
     template = ENVIRONMENT.get_template("index.html")
 
+    referer = event.get('http', {}).get("headers", {}).get('referer', "/auth/user"),
+
     if method.lower() == 'post':
         valid_token = create_jwt(event['username'], event['password'])
         if valid_token:
-            location = event.get('http', {}).get("headers", {}).get('referer', "/auth/user"),
             return {
                 "statusCode": 303,
                 "headers": {
                     "Set-Cookie": f"Token={valid_token}; Path=/; Max-Age=300; Secure; HttpOnly",
-                    "Location": location,
+                    "Location": referer,
                 }
             }    
     elif method.lower() == 'get':
@@ -56,7 +57,7 @@ def html_reponse(event):
                         return {
                             "statusCode": 303,
                             "headers": {
-                                "Location": "/auth/home",
+                                "Location": referer,
                             }
                         }
 
