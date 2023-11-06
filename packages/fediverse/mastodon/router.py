@@ -1,12 +1,9 @@
 import jinja2
 
+from pages import index
 
-def route(event, token):
-    response = {
-        "template": "index.html",
-        "statusCode": 200,
-        "message": "Hello World.",
-        "data": {"content": "Hello World!"},
-        "headers": {}
-    }
+
+def route(event, path, method, token):
+    if path == "":
+        response = index.main(event, method, token)
     return response

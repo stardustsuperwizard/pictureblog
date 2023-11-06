@@ -22,7 +22,7 @@ packages:
     functions:
       - name: mastodon
         environment:
-          AUTHREQUIRED: True
+          AUTHREQUIRED: 'true'
           HTTPMETHODS: 'get,post'
         runtime: 'python:3.11'
         limits:

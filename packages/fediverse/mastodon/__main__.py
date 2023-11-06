@@ -9,12 +9,15 @@ ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
 SECRET = os.environ['JWTSECRET']
 
 try:
-    AUTHENTICATION_REQUIRED = bool(os.environ['AUTHREQUIRED'])
+    if os.environ['AUTHREQUIRED'].lower() == 'false':
+        AUTHENTICATION_REQUIRED = False
+    else:
+        AUTHENTICATION_REQUIRED = True
 except Exception as e:
-    AUTHENTICATION_REQUIRED = True
+    AUTHENTICATION_REQUIRED = False
 
 try:
-    METHODS = os.environ['HTTPMETHODS'].split(',')
+    METHODS = [m.lower() for m in os.environ['HTTPMETHODS'].split(',')]
 except Exception as e:
     METHODS = ['get', 'post']
 
@@ -55,7 +58,8 @@ def json_authentication(event):
 
 def main(event, context):
     # Check if HTTP methods are valid.
-    if event.get('http', {}).get('method', "").lower() in [i.lower() for i in METHODS]: 
+    method = event.get('http', {}).get('method', "").lower()
+    if method in METHODS: 
         pass
     else:
         return {
@@ -108,11 +112,12 @@ def main(event, context):
                 }
 
 
-    response_data = router.route(event, token)
+    path = event.get('http', {}).get('path', "").lower()
+    response_data = router.route(event, path, method, token)
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
         response_data['headers']['Content-Type'] = 'text/html'
         template = ENVIRONMENT.get_template(response_data['template'])
-        page = template.render(event = json.dumps(event), response_data = response_data['data'])
+        page = template.render(response_data = response_data['data'])
         response = {
             "statusCode": response_data['statusCode'],
             "body": page,
@@ -144,7 +149,7 @@ def main(event, context):
 #
 # Debugging area:
 # 
-if __name__ == '__main__':
-    response = main({'http': {'method': "GET", 'headers': {'accept': 'application/json'}}}, "")
-    # response = main({}, "")
-    print(response)
+# if __name__ == '__main__':
+#     response = main({'http': {'method': "GET", 'headers': {'accept': 'text/html'}}}, "")
+#     # response = main({}, "")
+#     print(response)
