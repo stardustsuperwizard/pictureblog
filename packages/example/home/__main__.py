@@ -50,7 +50,7 @@ def authentication(event):
         valid_token = validate_jwt(token)
         if valid_token:
             return valid_token
-    return False
+    return token
 
 
 def main(event, context):
@@ -80,9 +80,8 @@ def main(event, context):
 
 
     # Check if authentication is required
-    token = False
+    token = authentication(event)
     if AUTHENTICATION_REQUIRED:
-        token = authentication(event)
         if token == False:
             if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
                 return {
