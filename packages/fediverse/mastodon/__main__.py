@@ -31,28 +31,25 @@ def validate_jwt(encoded_jwt: str):
     return data
 
 
-def html_authentication(event):
+def authentication(event):
+    token = False
+
     if event.get('http', {}).get('headers', {}).get('cookie'):
         cookies = [key_val_pair for key_val_pair in event['http']['headers']['cookie'].split(';')]
         for cookie in cookies:
             if 'Token=' in cookie:
                 token = cookie.split('=')[1].strip()
-                valid_token = validate_jwt(token)
-                if valid_token:
-                    return valid_token
-    return False
-
-
-def json_authentication(event):
-    username = event.get('username')
-    password = event.get('password')
-
-    if not username or not password:
-        return False
-
-    if valid_token := create_jwt(username, password):
-        return valid_token
     
+    if event.get('http', {}).get('headers', {}).get('authentication'):
+        try:
+            token = event.get('http', {}).get('headers', {}).get('authentication').split()[1]
+        except Exception as e:
+            token = False
+
+    if token:
+        valid_token = validate_jwt(token)
+        if valid_token:
+            return valid_token
     return False
 
 
@@ -85,16 +82,12 @@ def main(event, context):
     # Check if authentication is required
     token = False
     if AUTHENTICATION_REQUIRED:
-        if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
-            token = html_authentication(event)
-        elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
-            token = json_authentication(event)
-        
+        token = authentication(event)
         if token == False:
             if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
                 return {
                     "statusCode": 401,
-                    "body": "<html><body><h1>401 Unauthorized</h1><p>You do not have valid authorization credentials.</p></body></html>",
+                    "body": "<html><body><h1>401 Unauthorized</h1><p>You do not have valid credentials.</p></body></html>",
                     "headers": {
                         "Content-Type": "text/html",
                     }
@@ -102,7 +95,7 @@ def main(event, context):
             elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
                 return {
                     "statusCode": 401,
-                    "body": { "message": "401 Unauthorized. You do not have valid authorization credentials.",
+                    "body": { "message": "401 Unauthorized. You do not have valid credentials.",
                         "data": {},
                         "event": event
                     },
