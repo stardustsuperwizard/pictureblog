@@ -1,13 +1,22 @@
 import os
 
+import jinja2
 import jwt
 
 import router
 
+ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
 SECRET = os.environ['JWTSECRET']
 
-AUTHENTICATION_REQUIRED = False
-METHODS = ["get", "post"]
+try:
+    AUTHENTICATION_REQUIRED = bool(os.environ['AUTHREQUIRED'])
+except Exception as e:
+    AUTHENTICATION_REQUIRED = True
+
+try:
+    METHODS = os.environ['HTTPMETHODS'].split(',')
+except Exception as e:
+    METHODS = ['get', 'post']
 
 
 # Validation Methods
@@ -75,7 +84,7 @@ def main(event, context):
         if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
             token = html_authentication(event)
         elif "application/json" in event.get('http', {}).get('headers', {}).get("accept", ""):
-            token = json_authenticated(event)
+            token = json_authentication(event)
         
         if token == False:
             if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
