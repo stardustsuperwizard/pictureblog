@@ -1,4 +1,6 @@
 packages:
+  environment:
+    LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
   - name: auth
     environment:
       ADMIN_NAME: ${ADMIN_NAME}
