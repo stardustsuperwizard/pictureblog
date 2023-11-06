@@ -19,3 +19,15 @@ packages:
         runtime: 'python:3.11'
         limits:
           timeout: 30000
+  - name: fediverse
+    environment:
+      ADMIN_NAME: ${ADMIN_NAME}
+      ADMIN_PASS: ${ADMIN_PASS}
+      JWTKey: ${JWTKey}
+      JWTSECRET: ${JWTSECRET}
+      LOG_DESTINATIONS: '[{"logtail":{"token":"${LOGTAIL}"}}]'
+    functions:
+      - name: mastodon
+        runtime: 'python:3.11'
+        limits:
+          timeout: 30000
