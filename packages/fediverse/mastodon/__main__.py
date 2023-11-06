@@ -2,7 +2,7 @@ import os
 
 import jwt
 
-from . import router
+import router
 
 SECRET = os.environ['JWTSECRET']
 
@@ -38,7 +38,7 @@ def json_authentication(event):
     if not username or not password:
         return False
 
-    if valid_token := create_jwt(username, password)
+    if valid_token := create_jwt(username, password):
         return valid_token
     
     return False
