@@ -6,7 +6,7 @@ import jwt
 
 
 ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-SECRET = os.environ['JWTKey']
+SECRET = os.environ['JWTSECRET']
 
 
 def validate_jwt(encoded_jwt: str):

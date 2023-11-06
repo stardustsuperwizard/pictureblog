@@ -11,7 +11,7 @@ import jwt
 
 
 ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader("templates/"))
-SECRET = os.environ['JWTKey']
+SECRET = os.environ['JWTSECRET']
 CREDENTIALS = Template("$user:$password")
 
 

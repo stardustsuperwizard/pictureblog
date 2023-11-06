@@ -1,7 +1,6 @@
 environment:
   ADMIN_NAME: ${ADMIN_NAME}
   ADMIN_PASS: ${ADMIN_PASS}
-  JWTKey: ${JWTKey}
   JWTSECRET: ${JWTSECRET}
 packages:
   - name: auth

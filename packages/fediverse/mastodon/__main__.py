@@ -4,7 +4,7 @@ import jwt
 
 from . import router
 
-SECRET = os.environ['JWTKey']
+SECRET = os.environ['JWTSECRET']
 
 AUTHENTICATION_REQUIRED = True
 METHODS = ["get", "post"]
