@@ -1,5 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Mastodon{% endblock %}
+{% block title %}Home{% endblock %}
 {% block content %}
 <p>{{ response_data['content'] }}</p>
+{% if response_data['token'] %}
+<a href="/auth/logout"><button>Logout</button></a>
+{% else %}
+<a href="/auth/login"><button>Login</button></a>
+{% endif %}
+
 {% endblock %}
