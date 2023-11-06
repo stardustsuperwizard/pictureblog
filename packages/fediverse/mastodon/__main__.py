@@ -46,7 +46,7 @@ def json_authentication(event):
 
 def main(event, context):
     # Check if HTTP methods are valid.
-    if event.get('http', {}).get('method', "") in METHODS: 
+    if event.get('http', {}).get('method', "").lower() in METHODS.lower(): 
         pass
     else:
         return {
@@ -136,6 +136,6 @@ def main(event, context):
 # Debugging area:
 # 
 if __name__ == '__main__':
-    response = main({'http':{'headers':{'cookie':'Token=athing', 'accept':'text/html'}}}, "")
+    response = main({'http': {}}, "")
     # response = main({}, "")
     print(response)
