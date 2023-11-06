@@ -6,15 +6,17 @@ environment:
 packages:
   - name: auth
     functions:
-      - name: user
-        runtime: 'python:3.11'
-        limits:
-          timeout: 30000
       - name: login
         runtime: 'python:3.11'
         limits:
           timeout: 30000
       - name: logout
+        runtime: 'python:3.11'
+        limits:
+          timeout: 30000
+  - name: user
+    functions:
+      - name: home
         runtime: 'python:3.11'
         limits:
           timeout: 30000
