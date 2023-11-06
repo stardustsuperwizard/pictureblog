@@ -34,7 +34,7 @@ def html_reponse(event):
     user = False
     template = ENVIRONMENT.get_template("index.html")
 
-    referer = event.get('http', {}).get("headers", {}).get('referer', "/auth/user"),
+    referer = event.get('http', {}).get("headers", {}).get('referer', "/auth/user")
 
     if method.lower() == 'post':
         valid_token = create_jwt(event['username'], event['password'])
