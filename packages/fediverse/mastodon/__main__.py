@@ -6,7 +6,7 @@ import router
 
 SECRET = os.environ['JWTSECRET']
 
-AUTHENTICATION_REQUIRED = True
+AUTHENTICATION_REQUIRED = False
 METHODS = ["get", "post"]
 
 
@@ -46,7 +46,7 @@ def json_authentication(event):
 
 def main(event, context):
     # Check if HTTP methods are valid.
-    if event.get('http', {}).get('method', "").lower() in METHODS.lower(): 
+    if event.get('http', {}).get('method', "").lower() in [i.lower() for i in METHODS]: 
         pass
     else:
         return {
@@ -136,6 +136,6 @@ def main(event, context):
 # Debugging area:
 # 
 if __name__ == '__main__':
-    response = main({'http': {}}, "")
+    response = main({'http': {'method': "GET", 'headers': {'accept': 'application/json'}}}, "")
     # response = main({}, "")
     print(response)
