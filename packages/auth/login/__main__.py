@@ -62,8 +62,8 @@ def html_reponse(event):
                         }
 
     return {
-        "statusCode": 418,
-        "body": "<html><body><p>418 I'm a teapot</p></body></html>",
+        "statusCode": 200,
+        "body": template.render(),
         "headers": {
             "Content-Type": "text/html",
         }
@@ -106,7 +106,7 @@ def json_response(event):
 
 
 def main(event, context):
-    logging.info("hello world!")
+    logging.debug("hello world!")
     response = {}
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
         response = html_reponse(event)
