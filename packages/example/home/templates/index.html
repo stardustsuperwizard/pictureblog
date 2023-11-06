@@ -3,6 +3,7 @@
 {% block content %}
 <p>{{ response_data['content'] }}</p>
 {% if response_data['token'] %}
+<a href="/user/home"><button>User</button></a>
 <a href="/auth/logout"><button>Logout</button></a>
 {% else %}
 <a href="/auth/login"><button>Login</button></a>

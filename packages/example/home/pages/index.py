@@ -7,6 +7,6 @@ def main(event, method, token):
         "template": "index.html",
         "statusCode": 200,
         "message": "Hello World.",
-        "data": {"content": content},
+        "data": {"content": content, "token": token},
         "headers": {}
     }
