@@ -1,4 +1,3 @@
-import json
 import os
 
 import jinja2
@@ -34,7 +33,7 @@ def html_reponse(event):
 
     return {
         "statusCode": 200,
-        "body": template.render(event = json.dumps(event), user = user),
+        "body": template.render(user = user),
         "headers": {
             "Content-Type": "text/html",
         }

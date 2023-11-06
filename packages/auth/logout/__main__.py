@@ -19,7 +19,7 @@ def html_reponse(event):
                 token = cookie.split('=')[1].strip()
                 return {
                     "statusCode": 200,
-                    "body": template.render(event = json.dumps(event), message="Found the Token."),
+                    "body": template.render(message="Found the Token."),
                     "headers":{
                         "Content-Type": "text/html",
                         "Set-Cookie": f"Token={token}; Path=/; Max-Age=0; Secure; HttpOnly",
@@ -27,7 +27,7 @@ def html_reponse(event):
                 }
         return {
             "statusCode": 200,
-            "body": template.render(event = json.dumps(event), message="Did not find the Token.", cookies=cookies),
+            "body": template.render(message="Did not find the Token.", cookies=cookies),
             "headers":{
                 "Content-Type": "text/html",
             }
@@ -35,7 +35,7 @@ def html_reponse(event):
     else:
         return {
             "statusCode": 200,
-            "body": template.render(event = json.dumps(event), message="No Cookies."),
+            "body": template.render(message="No Cookies."),
             "headers":{
                 "Content-Type": "text/html",
             }

@@ -62,8 +62,8 @@ def html_reponse(event):
                         }
 
     return {
-        "statusCode": 200,
-        "body": template.render(event = json.dumps(event)),
+        "statusCode": 418,
+        "body": "<html><body><p>418 I'm a teapot</p></body></html>",
         "headers": {
             "Content-Type": "text/html",
         }
