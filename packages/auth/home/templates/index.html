@@ -4,6 +4,7 @@
 <h1>Home</h1>
 {% if user %}
 <p>Hello, {{ user }}</p>
+<a href="/api/fediverse/mastodon"><button>Mastodon</button></a>
 <a href="/api/auth/logout"><button>Logout</button></a>
 {% else %}
 <p>Hello, stranger!</p>
