@@ -1,7 +1,5 @@
 import base64
 import datetime
-import json
-import logging
 import os
 
 from string import Template
@@ -106,7 +104,6 @@ def json_response(event):
 
 
 def main(event, context):
-    logging.debug("hello world!")
     response = {}
     if "text/html" in event.get('http', {}).get('headers', {}).get("accept", ""):
         response = html_reponse(event)
