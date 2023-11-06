@@ -14,7 +14,7 @@ try:
     else:
         AUTHENTICATION_REQUIRED = True
 except Exception as e:
-    AUTHENTICATION_REQUIRED = False
+    AUTHENTICATION_REQUIRED = True
 
 try:
     METHODS = [m.lower() for m in os.environ['HTTPMETHODS'].split(',')]

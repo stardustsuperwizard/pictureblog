@@ -24,7 +24,7 @@ packages:
     functions:
       - name: home
         environment:
-          AUTHREQUIRED: 'true'
+          AUTHREQUIRED: 'false'
           HTTPMETHODS: 'get,post'
         runtime: 'python:3.11'
         limits:
